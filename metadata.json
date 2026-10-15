@@ -1,7 +1,10 @@
 {
   "name": "Quantum Cadence: Song Analysis Framework",
-  "description": "An in-depth song analysis framework for artists, powered by Gemini. Analyze lyrics and concepts, chat with an AI creative partner, and transcribe audio ideas on the fly to embrace unconventionality and innovate your music.",
+  "description": "An in-depth song and album analysis framework for artists, powered by Gemini. Analyze individual tracks or complete album sessions, visualize macro energy arcs, chat with an AI creative partner, and critique compositions.",
   "requestFramePermissions": [
     "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
   ]
 }

@@ -108,6 +108,51 @@ const SongAnalysis: React.FC = () => {
     }
   };
 
+  const handleExportTXT = () => {
+    if (!analysis) return;
+
+    let content = '';
+    content += `=========================================\n`;
+    content += `         QUANTUM CADENCE ANALYSIS        \n`;
+    content += `=========================================\n\n`;
+    if (title) content += `TITLE:  ${title}\n`;
+    if (artist) content += `ARTIST: ${artist}\n`;
+    content += `DATE:   ${new Date().toLocaleDateString()}\n\n`;
+
+    if (visualizerPoints && visualizerPoints.length > 0) {
+      content += `-----------------------------------------\n`;
+      content += `       COMPOSITION TIMELINE PEAKS        \n`;
+      content += `-----------------------------------------\n`;
+      content += `Time   | Section          | Lyrical | Vocal\n`;
+      content += `       |                  | Density | Intensity\n`;
+      content += `-------|------------------|---------|----------\n`;
+      visualizerPoints.forEach(p => {
+        const sectionStr = p.section.padEnd(16, ' ').substring(0, 16);
+        const timeStr = p.time.padEnd(6, ' ').substring(0, 6);
+        const lyrStr = `${p.lyricalDensity}%`.padStart(7, ' ');
+        const vocStr = `${p.vocalIntensity}%`.padStart(7, ' ');
+        content += `${timeStr} | ${sectionStr} | ${lyrStr} | ${vocStr}\n`;
+      });
+      content += `-----------------------------------------\n\n`;
+    }
+
+    content += `-----------------------------------------\n`;
+    content += `            DETAILED ANALYSIS            \n`;
+    content += `-----------------------------------------\n\n`;
+    content += analysis;
+
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    const fileName = title ? `${title.replace(/\s+/g, '_')}_Analysis.txt` : 'Song_Analysis.txt';
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const handleFileChange = async (selectedFile: File | null) => {
     if (!selectedFile) return;
     
@@ -450,14 +495,25 @@ const SongAnalysis: React.FC = () => {
         <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold text-gray-100">Analysis Output</h2>
             {analysis && !isLoading && (
-                <button 
-                    onClick={handleExportPDF}
-                    disabled={isExporting}
-                    className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest bg-gray-800 hover:bg-gray-700 text-purple-400 border border-purple-500/30 px-3 py-1.5 rounded-md transition-all disabled:opacity-50"
-                >
-                    {isExporting ? <Loader /> : <DownloadIcon className="w-4 h-4" />}
-                    {isExporting ? 'Exporting...' : 'Export PDF'}
-                </button>
+                <div className="flex gap-2">
+                    <button 
+                        onClick={handleExportTXT}
+                        className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest bg-gray-800 hover:bg-gray-750 text-cyan-400 border border-cyan-500/30 px-3 py-1.5 rounded-md transition-all cursor-pointer"
+                        title="Download as a formatted Plain Text file"
+                    >
+                        <DownloadIcon className="w-4 h-4" />
+                        Export TXT
+                    </button>
+                    <button 
+                        onClick={handleExportPDF}
+                        disabled={isExporting}
+                        className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest bg-gray-800 hover:bg-gray-700 text-purple-400 border border-purple-500/30 px-3 py-1.5 rounded-md transition-all disabled:opacity-50 cursor-pointer"
+                        title="Download as a PDF document"
+                    >
+                        {isExporting ? <Loader /> : <DownloadIcon className="w-4 h-4" />}
+                        {isExporting ? 'Exporting...' : 'Export PDF'}
+                    </button>
+                </div>
             )}
         </div>
         <div className="bg-gray-900/70 p-4 rounded-md border border-gray-700 min-h-[60vh] flex flex-col gap-6">

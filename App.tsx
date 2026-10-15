@@ -4,6 +4,7 @@ import { Tab } from './types';
 import Header from './components/Header';
 import Tabs from './components/Tabs';
 import SongAnalysis from './components/SongAnalysis';
+import AlbumSessionReview from './components/AlbumSessionReview';
 import Chatbot from './components/Chatbot';
 import Transcriber from './components/Transcriber';
 import CritiqueSimulator from './components/CritiqueSimulator';
@@ -15,6 +16,8 @@ const App: React.FC = () => {
     switch (activeTab) {
       case 'analyze':
         return <SongAnalysis />;
+      case 'album':
+        return <AlbumSessionReview />;
       case 'chat':
         return <Chatbot />;
       case 'transcribe':

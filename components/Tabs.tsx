@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Tab } from '../types';
-import { SparkleIcon, ChatIcon, MicIcon, UsersIcon } from './icons';
+import { SparkleIcon, ChatIcon, MicIcon, UsersIcon, DiscIcon } from './icons';
 
 interface TabsProps {
   activeTab: Tab;
@@ -11,6 +11,7 @@ interface TabsProps {
 const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
   const tabs: { id: Tab; name: string; icon: React.ElementType }[] = [
     { id: 'analyze', name: 'Song Analysis', icon: SparkleIcon },
+    { id: 'album', name: 'Album Session', icon: DiscIcon },
     { id: 'critique', name: 'Critique Simulator', icon: UsersIcon },
     { id: 'chat', name: 'AI Chat', icon: ChatIcon },
     { id: 'transcribe', name: 'Transcribe', icon: MicIcon },
